@@ -4,6 +4,8 @@ include ../../mixins/alert.pug
 block main 
     +Show-Alert-Error(5000)
 
+    a(href=`${prefixAdmin}/product`) Quay Lại 
+
     h1(class="mb-4") Thêm mới sản phẩm
     form(
         action=`${prefixAdmin}/product/create`
