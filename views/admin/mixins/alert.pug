@@ -1,0 +1,12 @@
+mixin Show-Alert(time)
+    - if (messages.success)
+       .message.info
+        div.alert.alert-success(show-alert)(data-time=time)
+            span=messages.success
+        span(class="button-x btn-primary btn") X
+mixin Show-Alert-Error(time)
+    - if (messages.error)
+       .message.info
+        div.alert.alert-danger(show-alert)(data-time=time)
+            span=messages.error 
+        pan(class="button-x btn-primary btn") X

@@ -1,0 +1,148 @@
+extends ../../layouts/default.pug 
+include ../../mixins/pagination.pug
+include ../../mixins/search.pug
+include ../../mixins/alert.pug
+include ../../mixins/filter-status.pug
+
+block main
+     +Show-Alert(5000)
+         
+     h1  Trang Danh Sách Sản Phẩm 
+
+     .col6 
+        .card.mb-3 
+            .card-header Bộ lọc và tìm kiếm
+            .card-body
+                .row  
+                    +filter-Status(filterStatus)
+                            
+                    +search(keyword)
+                                
+
+     .card.mb-3 
+        .card-header Danh sách
+        .card-body
+            .row
+                .col-8
+                    form(
+                        action=`${prefixAdmin}/product/change-multi?_method=PATCH`
+                        method="POST"
+                        form-change-multi
+                    )
+                        .d-flex.align-items-start 
+                            .form-group 
+                                select(name="type" class="form-control")
+                                    option(disable) --Chọn Tất Cả--
+                                    option(value="active") Hoạt Động
+                                    option(value="inactive") Dừng Hoạt Động
+                                    option(value="delete-all") Xóa Tất Cả
+                                    option(value="change-position") Thay Đổi Vị Trí
+                            .form-group
+                                input(
+                                    type="text"
+                                    name="ids"
+                                    value=""
+                                    class="form-control d-none"
+                                )
+                            button(type="submit" class="btn btn-primary") Áp Dụng
+                .col-4 
+                    a(
+                        href=`${prefixAdmin}/product/create`
+                        class="btn btn-outline-success"
+                    ) + Thêm Mới
+
+            table(
+                class="table table-hover table-sm"
+                check-box-multi 
+            )
+                thead  
+                    tr
+                        th
+                            input(type="checkbox" name="checkall") 
+                        th STT 
+                        th Hình Ảnh
+                        th Tiêu Đề
+                        th Giá
+                        th Vị Trí
+                        th Trạng Thái
+                        th Hành Động 
+                    
+                tbody 
+                    each item, index  in products
+                        tr 
+                            td      
+                                input(
+                                    type="checkbox"
+                                    name="id"
+                                    value=item.id 
+                                )
+                            td #{index + 1}
+                            td 
+                                img(
+                                                                       
+                                    src="data:image/webp;base64,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"
+                                    alt ="SP"
+                                    width="100px"
+                                    height="auto"
+                                )
+                            td #{item.title}
+                            td #{item.price}$
+                            td 
+                                input(
+                                    type="number"
+                                    value=item.position 
+                                    style="width:60px"
+                                    min="1"
+                                    name="position"
+                                )
+                            td
+                                if (item.status == "active")
+                                    a(
+                                        href="javascript:;"
+                                        data-status=item.status 
+                                        data-id=item.id  
+                                        button-change-status
+                                        class="badge badge-success"
+                                    ) Hoạt Động 
+                                else 
+                                    a(
+                                        href="javascript:;" 
+                                        data-status=item.status 
+                                        data-id=item.id 
+                                        button-change-status
+                                        class="badge badge-eror"
+                                    ) Dừng Hoạt Động 
+
+                            td 
+                                a(
+                                    href=`${prefixAdmin}/product/detail/${item.id}`
+                                    class="btn btn-secondary btn-sm"
+                                ) Chi Tiết 
+                                a(
+                                    href=`${prefixAdmin}/product/edit/${item.id}`
+                                    class="btn btn-warning btn-sm"
+                                ) Sửa
+                                button(
+                                    class="btn btn-warning btn-sm ml-1"
+                                    button-delete 
+                                    data-id=item.id 
+                                    ) Xóa
+
+        +pagination(pagination)
+
+        form(
+            action=""
+            method="POST"    
+            id="form-change-status"
+            data-path=`${prefixAdmin}/product/change-status`
+        ) 
+
+        form(
+            action=""
+            method="POST"
+            id="form-delete-item"
+            data-path=`${prefixAdmin}/product/delete`
+        ) 
+
+        script(src="/admin/js/product.js")
+
