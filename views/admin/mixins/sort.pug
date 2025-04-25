@@ -1,0 +1,23 @@
+mixin sort()
+    .card.mb-3 
+        .card-header Sắp Xếp 
+        .card-body
+            .row 
+                .col-4 
+                    div(sort)
+                        select(
+                            class="form-control"
+                            sort-select 
+                            name="sort"
+                        )
+                            option(value="position-desc") Vị Trí Giảm Dần 
+                            option(value="position-asc") Vị Trí Tăng Dần
+                            option(value="price-desc") Giá Giảm Dần
+                            option(value="price-asc") Giá Tăng Dần
+                            option(value="title-desc") Tiêu Đề A-Z
+                            option(value="title-desc") Tiêu Đề Z-A
+
+                        button(
+                            class="btn btn-danger mt-2"
+                            sort-clear
+                        ) Xóa

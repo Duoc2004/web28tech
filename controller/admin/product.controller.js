@@ -24,6 +24,17 @@ module.exports.index = async (req, res) => {
         find.status = req.query.status;
     }
 
+    // Sort 
+
+    let sort = {};
+    if(req.query.sortKey && req.query.sortValue) {
+        sort[req.query.sortKey] = req.query.sortValue;
+    }else{
+        sort.position = "desc";
+    }
+    
+    // End Sort 
+
     // doan search 
     const searchObject = searchHelper(req.query);
 
@@ -48,7 +59,7 @@ module.exports.index = async (req, res) => {
     const products = await Product.find(find)
         .limit(objectPagination.limitItem)
         .skip(objectPagination.skip)
-        .sort({ position: "desc" });
+        .sort(sort);
 
     res.render("./admin/pages/products/index", {
         pageTitle: "Trang Danh Sách Sản Phẩm",
